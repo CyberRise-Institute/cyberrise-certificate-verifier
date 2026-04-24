@@ -2,33 +2,42 @@
 <html>
 <head>
   <title>CyberRise QR Generator</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
+
 <body style="font-family: Arial; text-align:center; padding:40px;">
 
   <h2>CyberRise QR Generator</h2>
 
   <input id="certId" placeholder="Enter Certificate ID" />
+  <br><br>
+
   <button onclick="generateQR()">Generate QR</button>
 
   <div id="qrcode" style="margin-top:20px;"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+function generateQR() {
+  let id = document.getElementById("certId").value.trim();
 
-  <script>
-    function generateQR() {
-      let id = document.getElementById("certId").value;
+  if (!id) {
+    alert("Please enter Certificate ID");
+    return;
+  }
 
-      let url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + id;
+  let url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + id;
 
-      document.getElementById("qrcode").innerHTML = "";
+  let container = document.getElementById("qrcode");
+  container.innerHTML = "";
 
-      new QRCode(document.getElementById("qrcode"), {
-        text: url,
-        width: 200,
-        height: 200
-      });
-    }
-  </script>
+  new QRCode(container, {
+    text: url,
+    width: 200,
+    height: 200
+  });
+}
+</script>
 
 </body>
 </html>
