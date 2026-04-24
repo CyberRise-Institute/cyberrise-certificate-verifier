@@ -1,195 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>CyberRise Certificate Verification</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #1e293b;
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-
-    h1 {
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
-      background: #22c55e;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #16a34a;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
-    }
-
-    .valid {
-      background: #064e3b;
-    }
-
-    .invalid {
-      background: #7f1d1d;
-    }
-
-    footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-  </style>
 </head>
 
-<body>
+<body style="font-family: Arial; text-align:center; padding:40px;">
 
-<div class="container">
-  <h1>🔐 CyberRise Certificate Verification</h1>
-  <p>Enter Certificate ID</p>
+  <h2>CyberRise Certificate Verification</h2>
 
-  <input type="text" id="certId" placeholder="e.g. CR-2026-001">
+  <input id="certId" placeholder="Enter Certificate ID" />
+  <br><br>
+
   <button onclick="verifyCertificate()">Verify</button>
 
-  <div id="result" class="result"></div>
+  <div id="result" style="margin-top:20px;"></div>
 
-  <footer>© 2026 CyberRise Institute</footer>
-</div>
+  <!-- 🔥 FIREBASE SCRIPT (PASTE HERE) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<script>
-  const certificates = [
-    {
-      id: "CR-2026-001",
-      name: "John Doe",
-      course: "CyberRise 30-Day Cybersecurity Career Blueprint",
-      date: "April 2026"
-    },
-    {
-      id: "CR-2026-002",
-      name: "Jane Smith",
-      course: "CyberRise 30-Day Cybersecurity Career Blueprint",
-      date: "April 2026"
-    }
-  ];
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
+      authDomain: "cyberrise-certificates.firebaseapp.com",
+      projectId: "cyberrise-certificates",
+      storageBucket: "cyberrise-certificates.appspot.com",
+      messagingSenderId: "358741421806",
+      appId: "1:358741421806:web:5c9105e3ebc85895780dff"
+    };
 
-  function verifyCertificate() {
-    const input = document.getElementById("certId").value.trim();
-    const resultDiv = document.getElementById("result");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    const found = certificates.find(cert => cert.id === input);
+    window.verifyCertificate = async function () {
+      const id = document.getElementById("certId").value.trim();
+      const result = document.getElementById("result");
 
-    if (found) {
-      resultDiv.className = "result valid";
-      resultDiv.style.display = "block";
-      resultDiv.innerHTML = `
-        ✔ Certificate Verified <br><br>
-        <strong>Name:</strong> ${found.name} <br>
-        <strong>Course:</strong> ${found.course} <br>
-        <strong>Date:</strong> ${found.date} <br>
-        <strong>Status:</strong> VALID
-      `;
-    } else {
-      resultDiv.className = "result invalid";
-      resultDiv.style.display = "block";
-      resultDiv.innerHTML = `
-        ❌ Certificate Not Found
-      `;
-    }
-  }
+      if (!id) {
+        result.innerHTML = "❌ Enter Certificate ID";
+        return;
+      }
 
-  // 🔗 Auto-check from URL (?id=CR-2026-001)
-  const params = new URLSearchParams(window.location.search);
-  const certIdFromURL = params.get("id");
+      const ref = doc(db, "certificates", id);
+      const snap = await getDoc(ref);
 
-  if (certIdFromURL) {
-    document.getElementById("certId").value = certIdFromURL;
-    verifyCertificate();
-  }
-</script>
+      if (snap.exists()) {
+        const data = snap.data();
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        result.innerHTML = `
+          ✔ Certificate Verified <br><br>
+          Name: ${data.name} <br>
+          Course: ${data.course} <br>
+          Date: ${data.date} <br>
+          Status: VALID
+        `;
+      } else {
+        result.innerHTML = "❌ Certificate Not Found";
+      }
+    };
+  </script>
 
-  // 🔥 YOUR FIREBASE CONFIG (replace with your real values)
-  const firebaseConfig = {
-    apiKey: "PASTE_YOUR_API_KEY_HERE",
-    authDomain: "cyberrise-certificates.firebaseapp.com",
-    projectId: "cyberrise-certificates",
-    storageBucket: "cyberrise-certificates.appspot.com",
-    messagingSenderId: "358741421806",
-    appId: "1:358741421806:web:5c9105e3ebc85895780dff"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // 🔍 VERIFY FUNCTION (this replaces your old logic)
-  window.verifyCertificate = async function () {
-    const id = document.getElementById("certId").value.trim();
-    const result = document.getElementById("result");
-
-    if (!id) {
-      result.innerHTML = "❌ Enter Certificate ID";
-      return;
-    }
-
-    const ref = doc(db, "certificates", id);
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-      const data = snap.data();
-
-      result.innerHTML = `
-        ✔ Certificate Verified <br><br>
-        Name: ${data.name} <br>
-        Course: ${data.course} <br>
-        Date: ${data.date} <br>
-        Status: VALID
-      `;
-    } else {
-      result.innerHTML = "❌ Certificate Not Found";
-    }
-  };
-</script>
 </body>
 </html>
