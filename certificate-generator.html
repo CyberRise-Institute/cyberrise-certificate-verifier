@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CyberRise Certificate Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body style="font-family: Arial; text-align:center; padding:30px;">
+
+  <h2>CyberRise Auto Certificate Generator</h2>
+
+  <input id="name" placeholder="Student Name"><br><br>
+  <input id="id" placeholder="Certificate ID (e.g. CR-2026-001)"><br><br>
+
+  <button onclick="generateCert()">Generate PDF Certificate</button>
+
+  <div id="qr" style="margin-top:20px;"></div>
+
+<script>
+async function generateCert() {
+  const { jsPDF } = window.jspdf;
+
+  const name = document.getElementById("name").value;
+  const id = document.getElementById("id").value;
+
+  const url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + id;
+
+  // Create QR
+  document.getElementById("qr").innerHTML = "";
+  new QRCode(document.getElementById("qr"), {
+    text: url,
+    width: 100,
+    height: 100
+  });
+
+  setTimeout(() => {
+    const qrImg = document.querySelector("#qr img").src;
+
+    const doc = new jsPDF();
+
+    // Title
+    doc.setFontSize(22);
+    doc.text("CyberRise Institute", 60, 20);
+
+    doc.setFontSize(16);
+    doc.text("Certificate of Completion", 65, 35);
+
+    doc.setFontSize(12);
+    doc.text("This certifies that", 85, 50);
+
+    doc.setFontSize(18);
+    doc.text(name, 80, 65);
+
+    doc.setFontSize(12);
+    doc.text("has successfully completed the CyberRise 30-Day Cybersecurity Program", 20, 80);
+
+    doc.text("Certificate ID: " + id, 20, 95);
+
+    // Add QR code
+    doc.addImage(qrImg, "PNG", 160, 10, 40, 40);
+
+    // Footer
+    doc.text("Verify at: cyberrise-institute.github.io", 20, 130);
+
+    doc.save(id + "-CyberRise-Certificate.pdf");
+
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
