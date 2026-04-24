@@ -15,7 +15,6 @@
   <h2>CyberRise Auto Certificate Generator</h2>
 
   <input id="name" placeholder="Student Name"><br><br>
-  <input id="id" placeholder="Certificate ID (e.g. CR-2026-001)"><br><br>
 
   <button onclick="generateCert()">Generate Certificate</button>
 
@@ -23,7 +22,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
@@ -42,16 +41,29 @@
     const { jsPDF } = window.jspdf;
 
     const name = document.getElementById("name").value.trim();
-    const id = document.getElementById("id").value.trim();
 
-    if (!name || !id) {
-      alert("Please enter Name and Certificate ID");
+    if (!name) {
+      alert("Enter student name");
       return;
     }
 
-    const url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + encodeURIComponent(id);
+    // 🔥 GET COUNTER FROM FIREBASE
+    const counterRef = doc(db, "meta", "counter");
+    const counterSnap = await getDoc(counterRef);
 
-    // 🔥 SAVE TO FIREBASE
+    let lastId = 0;
+
+    if (counterSnap.exists()) {
+      lastId = counterSnap.data().lastId;
+    }
+
+    const newIdNumber = lastId + 1;
+
+    const id = "CR-2026-" + String(newIdNumber).padStart(3, "0");
+
+    const url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + id;
+
+    // 🔥 SAVE CERTIFICATE TO FIREBASE
     await setDoc(doc(db, "certificates", id), {
       name: name,
       course: "CyberRise 30-Day Cybersecurity Career Blueprint",
@@ -60,7 +72,12 @@
       verifyUrl: url
     });
 
-    // QR generation
+    // 🔥 UPDATE COUNTER
+    await setDoc(counterRef, {
+      lastId: newIdNumber
+    });
+
+    // QR GENERATION
     const qrContainer = document.getElementById("qr");
     qrContainer.innerHTML = "";
 
@@ -70,41 +87,16 @@
       height: 120
     });
 
-    // Wait for QR image to render
+    // WAIT FOR QR TO RENDER
     setTimeout(() => {
 
       const qrImg = qrContainer.querySelector("img");
 
       const doc = new jsPDF();
 
-      // Header
+      // HEADER
       doc.setFontSize(22);
       doc.text("CyberRise Institute", 55, 20);
 
       doc.setFontSize(16);
-      doc.text("Certificate of Completion", 60, 35);
-
-      doc.setFontSize(12);
-      doc.text("This certifies that", 85, 50);
-
-      // Name
-      doc.setFontSize(18);
-      doc.text(name, 80, 65);
-
-      // Details
-      doc.setFontSize(12);
-      doc.text("has completed the CyberRise 30-Day Cybersecurity Program", 20, 80);
-
-      doc.text("Certificate ID: " + id, 20, 95);
-
-      // QR Code
-      if (qrImg) {
-        doc.addImage(qrImg.src, "PNG", 160, 10, 40, 40);
-      }
-
-      // Footer
-      doc.text("Verify at: cyberrise-institute.github.io", 20, 130);
-
-      doc.save(id + "-CyberRise-Certificate.pdf");
-
-    }, 100
+      doc.text("Certificate
