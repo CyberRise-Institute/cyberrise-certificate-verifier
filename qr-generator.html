@@ -15,7 +15,7 @@
 
   <button onclick="generateQR()">Generate QR</button>
 
-  <div id="qrcode" style="margin-top:20px;"></div>
+  <div id="qrcode" style="margin-top:20px; display:flex; justify-content:center;"></div>
 
 <script>
 function generateQR() {
@@ -26,7 +26,7 @@ function generateQR() {
     return;
   }
 
-  let url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + id;
+  let url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + encodeURIComponent(id);
 
   let container = document.getElementById("qrcode");
   container.innerHTML = "";
