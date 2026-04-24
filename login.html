@@ -12,14 +12,20 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
     .box {
       background: #1e293b;
       padding: 30px;
-      border-radius: 10px;
-      width: 300px;
+      border-radius: 12px;
+      width: 320px;
       text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    h2 {
+      margin-bottom: 20px;
     }
 
     input {
@@ -28,6 +34,7 @@
       margin-top: 10px;
       border: none;
       border-radius: 6px;
+      outline: none;
     }
 
     button {
@@ -38,8 +45,18 @@
       border: none;
       border-radius: 6px;
       color: white;
-      cursor: pointer;
       font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .error {
+      margin-top: 10px;
+      color: #f87171;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -47,14 +64,14 @@
 <body>
 
 <div class="box">
-  <h2>Admin Login</h2>
+  <h2>🔐 CyberRise Admin Login</h2>
 
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password">
 
   <button onclick="login()">Login</button>
 
-  <p id="msg"></p>
+  <div id="msg" class="error"></div>
 </div>
 
 <script type="module">
@@ -64,6 +81,7 @@
     signInWithEmailAndPassword
   } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+  // 🔥 YOUR FIREBASE CONFIG
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "cyberrise-certificates.firebaseapp.com",
@@ -77,15 +95,24 @@
   const auth = getAuth(app);
 
   window.login = async function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
     const msg = document.getElementById("msg");
+
+    if (!email || !password) {
+      msg.innerText = "Please fill in all fields";
+      return;
+    }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+      // ✅ Redirect to admin dashboard
       window.location.href = "admin.html";
-    } catch (err) {
-      msg.innerText = "❌ Login failed";
+
+    } catch (error) {
+      msg.innerText = "❌ Invalid email or password";
     }
   };
 </script>
