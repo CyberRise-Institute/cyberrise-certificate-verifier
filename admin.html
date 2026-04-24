@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CyberRise Admin Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #22c55e;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #334155;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🔐 CyberRise Admin Dashboard</h1>
+
+  <!-- CREATE CERTIFICATE -->
+  <div class="card">
+    <h3>Create Certificate</h3>
+
+    <input id="name" placeholder="Student Name">
+
+    <button onclick="createCert()">Generate Certificate</button>
+
+    <p id="status" class="small"></p>
+  </div>
+
+  <!-- CERTIFICATE LIST -->
+  <div class="card">
+    <h3>Issued Certificates</h3>
+    <button onclick="loadCertificates()">Refresh List</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="certTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    getDocs,
+    collection
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "cyberrise-certificates.firebaseapp.com",
+    projectId: "cyberrise-certificates",
+    storageBucket: "cyberrise-certificates.appspot.com",
+    messagingSenderId: "358741421806",
+    appId: "1:358741421806:web:5c9105e3ebc85895780dff"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // CREATE CERTIFICATE
+  window.createCert = async function () {
+
+    const name = document.getElementById("name").value.trim();
+    const status = document.getElementById("status");
+
+    if (!name) {
+      alert("Enter name");
+      return;
+    }
+
+    // Get counter
+    const counterRef = doc(db, "meta", "counter");
+    const counterSnap = await getDoc(counterRef);
+
+    let lastId = counterSnap.exists() ? counterSnap.data().lastId : 0;
+
+    const newId = lastId + 1;
+    const certId = "CR-2026-" + String(newId).padStart(3, "0");
+
+    const url = "https://cyberrise-institute.github.io/cyberrise-certificate-verifier/?id=" + certId;
+
+    // Save certificate
+    await setDoc(doc(db, "certificates", certId), {
+      name: name,
+      course: "CyberRise 30-Day Cybersecurity Career Blueprint",
+      status: "valid",
+      verifyUrl: url
+    });
+
+    // Update counter
+    await setDoc(counterRef, {
+      lastId: newId
+    });
+
+    status.innerText = "✅ Certificate created: " + certId;
+
+    loadCertificates();
+  };
+
+  // LOAD CERTIFICATES
+  window.loadCertificates = async function () {
+
+    const table = document.getElementById("certTable");
+    table.innerHTML = "";
+
+    const snapshot = await getDocs(collection(db, "certificates"));
+
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+
+      table.innerHTML += `
+        <tr>
+          <td>${docSnap.id}</td>
+          <td>${data.name}</td>
+          <td>${data.status}</td>
+        </tr>
+      `;
+    });
+  };
+
+  loadCertificates();
+</script>
+
+</body>
+</html>
