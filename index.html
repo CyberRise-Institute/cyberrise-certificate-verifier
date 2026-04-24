@@ -1,64 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CyberRise Certificate Verification</title>
+  <title>CyberRise Certificate Verifier</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 40px;
+      background: #0f172a;
+      color: white;
+    }
+
+    .box {
+      max-width: 500px;
+      margin: auto;
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 95%;
+      background: #22c55e;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: left;
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .error {
+      color: #f87171;
+    }
+
+    .success {
+      color: #4ade80;
+    }
+  </style>
 </head>
 
-<body style="font-family: Arial; text-align:center; padding:40px;">
+<body>
 
-  <h2>CyberRise Certificate Verification</h2>
+<div class="box">
+  <h2>🎓 CyberRise Certificate Verification</h2>
 
-  <input id="certId" placeholder="Enter Certificate ID" />
-  <br><br>
+  <input id="certId" placeholder="Enter Certificate ID">
+  <button onclick="verifyCertificate()">Verify Certificate</button>
 
-  <button onclick="verifyCertificate()">Verify</button>
+  <div id="result"></div>
+</div>
 
-  <div id="result" style="margin-top:20px;"></div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  <!-- 🔥 FIREBASE SCRIPT (PASTE HERE) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  // 🔥 FIREBASE CONFIG
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "cyberrise-certificates.firebaseapp.com",
+    projectId: "cyberrise-certificates",
+    storageBucket: "cyberrise-certificates.appspot.com",
+    messagingSenderId: "358741421806",
+    appId: "1:358741421806:web:5c9105e3ebc85895780dff"
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
-      authDomain: "cyberrise-certificates.firebaseapp.com",
-      projectId: "cyberrise-certificates",
-      storageBucket: "cyberrise-certificates.appspot.com",
-      messagingSenderId: "358741421806",
-      appId: "1:358741421806:web:5c9105e3ebc85895780dff"
-    };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const result = document.getElementById("result");
 
-    window.verifyCertificate = async function () {
-      const id = document.getElementById("certId").value.trim();
-      const result = document.getElementById("result");
+  // 🚀 AUTO READ QR PARAM (?id=CR-2026-001)
+  const urlParams = new URLSearchParams(window.location.search);
+  const autoId = urlParams.get("id");
 
-      if (!id) {
-        result.innerHTML = "❌ Enter Certificate ID";
-        return;
-      }
+  if (autoId) {
+    document.getElementById("certId").value = autoId;
+    verifyCertificate();
+  }
 
-      const ref = doc(db, "certificates", id);
-      const snap = await getDoc(ref);
+  // 🔍 VERIFY FUNCTION
+  window.verifyCertificate = async function () {
 
-      if (snap.exists()) {
-        const data = snap.data();
+    const id = document.getElementById("certId").value.trim();
 
-        result.innerHTML = `
-          ✔ Certificate Verified <br><br>
-          Name: ${data.name} <br>
-          Course: ${data.course} <br>
-          Date: ${data.date} <br>
-          Status: VALID
-        `;
-      } else {
-        result.innerHTML = "❌ Certificate Not Found";
-      }
-    };
-  </script>
+    if (!id) {
+      result.innerHTML = "<p class='error'>❌ Please enter Certificate ID</p>";
+      return;
+    }
 
-</body>
-</html>
+    result.innerHTML = "<p>⏳
