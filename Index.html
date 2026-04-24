@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CyberRise Certificate Verification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #22c55e;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .valid {
+      background: #064e3b;
+    }
+
+    .invalid {
+      background: #7f1d1d;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🔐 CyberRise Certificate Verification</h1>
+  <p>Enter Certificate ID</p>
+
+  <input type="text" id="certId" placeholder="e.g. CR-2026-001">
+  <button onclick="verifyCertificate()">Verify</button>
+
+  <div id="result" class="result"></div>
+
+  <footer>© 2026 CyberRise Institute</footer>
+</div>
+
+<script>
+  const certificates = [
+    {
+      id: "CR-2026-001",
+      name: "John Doe",
+      course: "CyberRise 30-Day Cybersecurity Career Blueprint",
+      date: "April 2026"
+    },
+    {
+      id: "CR-2026-002",
+      name: "Jane Smith",
+      course: "CyberRise 30-Day Cybersecurity Career Blueprint",
+      date: "April 2026"
+    }
+  ];
+
+  function verifyCertificate() {
+    const input = document.getElementById("certId").value.trim();
+    const resultDiv = document.getElementById("result");
+
+    const found = certificates.find(cert => cert.id === input);
+
+    if (found) {
+      resultDiv.className = "result valid";
+      resultDiv.style.display = "block";
+      resultDiv.innerHTML = `
+        ✔ Certificate Verified <br><br>
+        <strong>Name:</strong> ${found.name} <br>
+        <strong>Course:</strong> ${found.course} <br>
+        <strong>Date:</strong> ${found.date} <br>
+        <strong>Status:</strong> VALID
+      `;
+    } else {
+      resultDiv.className = "result invalid";
+      resultDiv.style.display = "block";
+      resultDiv.innerHTML = `
+        ❌ Certificate Not Found
+      `;
+    }
+  }
+
+  // 🔗 Auto-check from URL (?id=CR-2026-001)
+  const params = new URLSearchParams(window.location.search);
+  const certIdFromURL = params.get("id");
+
+  if (certIdFromURL) {
+    document.getElementById("certId").value = certIdFromURL;
+    verifyCertificate();
+  }
+</script>
+
+</body>
+</html>
