@@ -145,5 +145,51 @@
   }
 </script>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // 🔥 YOUR FIREBASE CONFIG (replace with your real values)
+  const firebaseConfig = {
+    apiKey: "PASTE_YOUR_API_KEY_HERE",
+    authDomain: "cyberrise-certificates.firebaseapp.com",
+    projectId: "cyberrise-certificates",
+    storageBucket: "cyberrise-certificates.appspot.com",
+    messagingSenderId: "358741421806",
+    appId: "1:358741421806:web:5c9105e3ebc85895780dff"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 🔍 VERIFY FUNCTION (this replaces your old logic)
+  window.verifyCertificate = async function () {
+    const id = document.getElementById("certId").value.trim();
+    const result = document.getElementById("result");
+
+    if (!id) {
+      result.innerHTML = "❌ Enter Certificate ID";
+      return;
+    }
+
+    const ref = doc(db, "certificates", id);
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+      const data = snap.data();
+
+      result.innerHTML = `
+        ✔ Certificate Verified <br><br>
+        Name: ${data.name} <br>
+        Course: ${data.course} <br>
+        Date: ${data.date} <br>
+        Status: VALID
+      `;
+    } else {
+      result.innerHTML = "❌ Certificate Not Found";
+    }
+  };
+</script>
 </body>
 </html>
