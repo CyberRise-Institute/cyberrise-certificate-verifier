@@ -1,142 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>CyberRise Certificate Verification</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .card {
-      background: #1e293b;
-      padding: 40px;
-      border-radius: 16px;
-      width: 350px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(0,0,0,0.4);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      margin-top: 10px;
-      outline: none;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      background: #22c55e;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #16a34a;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 15px;
-    }
-  </style>
+  <title>Debug Certificate Verifier</title>
 </head>
 
-<body>
+<body style="font-family:Arial; text-align:center; padding:40px; background:#0f172a; color:white;">
 
-<div class="card">
-  <h2>🎓 Certificate Verification</h2>
+  <h2>🔍 Debug Certificate Verification</h2>
 
-  <input id="certId" placeholder="Enter Certificate ID (e.g. CR-2026-001)" />
+  <input id="certId" placeholder="Enter ID" style="padding:10px;">
+  <br><br>
 
-  <button onclick="verifyCertificate()">Verify Certificate</button>
+  <button onclick="verifyCertificate()">Verify</button>
 
-  <div id="result"></div>
-</div>
+  <div id="result" style="margin-top:20px;"></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // 🔥 YOUR FIREBASE CONFIG
   const firebaseConfig = {
     apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
     authDomain: "cyberrise-certificates.firebaseapp.com",
-    projectId: "cyberrise-certificates",
-    storageBucket: "cyberrise-certificates.appspot.com",
-    messagingSenderId: "358741421806",
-    appId: "1:358741421806:web:5c9105e3ebc85895780dff"
+    projectId: "cyberrise-certificates"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const result = document.getElementById("result");
-
-  // 🔍 AUTO VERIFY FROM QR (?id=...)
-  const params = new URLSearchParams(window.location.search);
-  const autoId = params.get("id");
-
-  if (autoId) {
-    document.getElementById("certId").value = autoId;
-    verifyCertificate();
-  }
-
-  // 🔍 VERIFY FUNCTION
   window.verifyCertificate = async function () {
 
-    const id = document.getElementById("certId").value.trim().replace(/\s/g, "");
+    const id = document.getElementById("certId").value.trim();
+    const result = document.getElementById("result");
 
-    console.log("Searching:", id);
-
-    if (!id) {
-      result.innerHTML = "❌ Enter Certificate ID";
-      return;
-    }
-
-    result.innerHTML = "⏳ Verifying...";
+    result.innerHTML = "Checking...";
 
     try {
+      console.log("🔎 Searching ID:", id);
+
       const ref = doc(db, "certificates", id);
       const snap = await getDoc(ref);
 
-      console.log("Exists:", snap.exists());
+      console.log("📦 Snapshot:", snap);
+      console.log("✅ Exists:", snap.exists());
 
       if (snap.exists()) {
         const data = snap.data();
 
         result.innerHTML = `
-          <div style="color:#22c55e;font-weight:bold;">✔ Certificate Verified</div><br>
-          <b>Name:</b> ${data.name || "N/A"} <br>
-          <b>Certificate ID:</b> ${id} <br>
-          <b>Status:</b> VALID
+          ✔ FOUND <br><br>
+          Name: ${data.name}
         `;
       } else {
-        result.innerHTML = "<span style='color:#f87171;'>❌ Certificate Not Found</span>";
+        result.innerHTML = "❌ NOT FOUND";
       }
 
     } catch (error) {
-      console.error(error);
-      result.innerHTML = "<span style='color:#f87171;'>⚠ Firebase connection error</span>";
+      console.error("🔥 ERROR:", error);
+      result.innerHTML = "⚠ ERROR: " + error.message;
     }
   };
 </script>
