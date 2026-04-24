@@ -4,135 +4,82 @@
   <meta charset="UTF-8">
   <title>CyberRise Certificate Verification</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- 🎨 GOOGLE FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
-      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-
-      /* 🌈 Beautiful Gradient Background */
-      background: linear-gradient(135deg, #0f172a, #1e3a8a, #0ea5e9);
-      color: white;
+      height: 100vh;
     }
 
-    .container {
-      width: 90%;
-      max-width: 500px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
+    .card {
+      background: #1e293b;
+      padding: 40px;
       border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      width: 350px;
       text-align: center;
+      box-shadow: 0 0 25px rgba(0,0,0,0.4);
     }
 
-    h1 {
-      font-size: 22px;
-      margin-bottom: 5px;
-    }
-
-    p.subtitle {
-      font-size: 13px;
-      opacity: 0.8;
+    h2 {
       margin-bottom: 20px;
     }
 
     input {
       width: 100%;
       padding: 12px;
-      border: none;
       border-radius: 8px;
+      border: none;
       margin-top: 10px;
       outline: none;
-      font-size: 14px;
     }
 
     button {
-      width: 100%;
       margin-top: 15px;
       padding: 12px;
+      width: 100%;
       border: none;
       border-radius: 8px;
       background: #22c55e;
       color: white;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     button:hover {
       background: #16a34a;
     }
 
-    .result {
+    #result {
       margin-top: 20px;
-      text-align: left;
-      padding: 15px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.25);
-      min-height: 80px;
-    }
-
-    .valid {
-      color: #4ade80;
-      font-weight: bold;
-    }
-
-    .invalid {
-      color: #f87171;
-      font-weight: bold;
-    }
-
-    .loading {
-      color: #facc15;
-    }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 11px;
-      opacity: 0.6;
+      font-size: 15px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
+  <h2>🎓 Certificate Verification</h2>
 
-  <h1>🎓 CyberRise Certificate Verification</h1>
-  <p class="subtitle">Secure blockchain-style verification system</p>
+  <input id="certId" placeholder="Enter Certificate ID (e.g. CR-2026-001)" />
 
-  <input id="certId" placeholder="Enter Certificate ID (e.g. CR-2026-001)">
   <button onclick="verifyCertificate()">Verify Certificate</button>
 
-  <div id="result" class="result">Enter an ID to verify certificate</div>
-
-  <div class="footer">
-    CyberRise Institute © 2026
-  </div>
-
+  <div id="result"></div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // 🔥 FIREBASE CONFIG
+  // 🔥 YOUR FIREBASE CONFIG
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
+    apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
     authDomain: "cyberrise-certificates.firebaseapp.com",
     projectId: "cyberrise-certificates",
     storageBucket: "cyberrise-certificates.appspot.com",
@@ -145,7 +92,7 @@
 
   const result = document.getElementById("result");
 
-  // 🚀 AUTO LOAD FROM QR (?id=...)
+  // 🔍 AUTO VERIFY FROM QR (?id=...)
   const params = new URLSearchParams(window.location.search);
   const autoId = params.get("id");
 
@@ -157,36 +104,39 @@
   // 🔍 VERIFY FUNCTION
   window.verifyCertificate = async function () {
 
-    const id = document.getElementById("certId").value.trim();
+    const id = document.getElementById("certId").value.trim().replace(/\s/g, "");
+
+    console.log("Searching:", id);
 
     if (!id) {
-      result.innerHTML = `<span class="invalid">❌ Please enter Certificate ID</span>`;
+      result.innerHTML = "❌ Enter Certificate ID";
       return;
     }
 
-    result.innerHTML = `<span class="loading">⏳ Verifying certificate...</span>`;
+    result.innerHTML = "⏳ Verifying...";
 
     try {
       const ref = doc(db, "certificates", id);
       const snap = await getDoc(ref);
 
+      console.log("Exists:", snap.exists());
+
       if (snap.exists()) {
         const data = snap.data();
 
         result.innerHTML = `
-          <div class="valid">✔ Certificate Verified</div>
-          <br>
-          <p><b>Name:</b> ${data.name}</p>
-          <p><b>Certificate ID:</b> ${id}</p>
-          <p><b>Status:</b> VALID</p>
+          <div style="color:#22c55e;font-weight:bold;">✔ Certificate Verified</div><br>
+          <b>Name:</b> ${data.name || "N/A"} <br>
+          <b>Certificate ID:</b> ${id} <br>
+          <b>Status:</b> VALID
         `;
       } else {
-        result.innerHTML = `<span class="invalid">❌ Certificate Not Found</span>`;
+        result.innerHTML = "<span style='color:#f87171;'>❌ Certificate Not Found</span>";
       }
 
     } catch (error) {
       console.error(error);
-      result.innerHTML = `<span class="invalid">⚠ Firebase connection error</span>`;
+      result.innerHTML = "<span style='color:#f87171;'>⚠ Firebase connection error</span>";
     }
   };
 </script>
