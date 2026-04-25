@@ -1,33 +1,50 @@
-// Firebase config
+// 🔥 Firebase Config (YOURS)
 const firebaseConfig = {
   apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
   authDomain: "cyberrise-certificates.firebaseapp.com",
-  projectId: "cyberrise-certificates"
+  databaseURL: "https://cyberrise-certificates-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "cyberrise-certificates",
+  storageBucket: "cyberrise-certificates.firebasestorage.app",
+  messagingSenderId: "358741421806",
+  appId: "1:358741421806:web:5c9105e3ebc85895780dff",
+  measurementId: "G-2PDGRCRCHX"
 };
 
-// Initialize Firebase
+// 🚀 Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Verify Function
+// 🔍 Verify Certificate
 function verifyCert() {
-  const id = document.getElementById("certID").value;
+  const id = document.getElementById("certID").value.trim();
+
+  if (!id) {
+    document.getElementById("result").innerHTML =
+      '<div class="error">⚠️ Please enter a Student ID</div>';
+    return;
+  }
 
   db.collection("certificates").doc(id).get()
     .then(doc => {
       if (doc.exists) {
         const data = doc.data();
+
         document.getElementById("result").innerHTML = `
-          <h3>✅ Certificate Verified</h3>
-          <p><strong>Name:</strong> ${data.name}</p>
-          <p><strong>Course:</strong> ${data.course}</p>
-          <p><strong>Date:</strong> ${data.date}</p>
+          <div class="success">
+            <h3>✅ Certificate Verified</h3>
+            <p><b>Name:</b> ${data.name}</p>
+            <p><b>Course:</b> ${data.course}</p>
+            <p><b>Date:</b> ${data.date}</p>
+          </div>
         `;
       } else {
-        document.getElementById("result").innerHTML = "❌ Certificate Not Found";
+        document.getElementById("result").innerHTML =
+          '<div class="error">❌ Certificate Not Found</div>';
       }
     })
     .catch(error => {
       console.error(error);
+      document.getElementById("result").innerHTML =
+        '<div class="error">⚠️ Error connecting to database</div>';
     });
 }
