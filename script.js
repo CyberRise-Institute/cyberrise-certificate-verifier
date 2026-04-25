@@ -27,20 +27,18 @@ function verifyCert() {
   db.collection("certificates").doc(id).get()
     .then(doc => {
       if (doc.exists) {
-        const data = doc.data();
+  const data = doc.data();
 
-        document.getElementById("result").innerHTML = `
-          <div class="success">
-            <h3>✅ Certificate Verified</h3>
-            <p><b>Name:</b> ${data.name}</p>
-            <p><b>Course:</b> ${data.course}</p>
-            <p><b>Date:</b> ${data.date}</p>
-          </div>
-        `;
-      } else {
-        document.getElementById("result").innerHTML =
-          '<div class="error">❌ Certificate Not Found</div>';
-      }
+  document.getElementById("result").innerHTML = `
+    <div class="cert-card">
+      <h2>🎓 Certificate Verified</h2>
+      <p class="cert-name">${data.name}</p>
+      <p class="cert-course">${data.course}</p>
+      <p class="cert-date">Issued: ${data.date}</p>
+      <p class="cert-id">ID: ${id}</p>
+    </div>
+  `;
+}
     })
     .catch(error => {
       console.error(error);
