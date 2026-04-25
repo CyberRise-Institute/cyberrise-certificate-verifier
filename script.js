@@ -33,10 +33,7 @@ function verifyCert() {
     <div class="cert-card">
       <h2>🎓 Certificate Verified</h2>
 
-      <p style="font-size:12px; color:#64748b;">
-        Verified by CyberRise Institute
-      </p>
-
+      <p class="verified-by">Verified by CyberRise Institute</p>
       <p class="cert-name">${data.name}</p>
       <p class="cert-course">${data.course}</p>
       <p class="cert-date">Issued: ${data.date}</p>
