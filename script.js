@@ -30,15 +30,15 @@ function verifyCert() {
   const data = doc.data();
 
   document.getElementById("result").innerHTML = `
-    <div class="cert-card">
-      <h2>🎓 Certificate Verified</h2>
-      <p class="cert-name">${data.name}</p>
-      <p class="cert-course">${data.course}</p>
-      <p class="cert-date">Issued: ${data.date}</p>
-      <p class="cert-id">ID: ${id}</p>
-    </div>
-  `;
-}
+  <div class="cert-card">
+    <h2>🎓 Certificate Verified</h2>
+    <p class="cert-name">${data.name}</p>
+    <p class="cert-course">${data.course}</p>
+    <p class="cert-date">Issued: ${data.date}</p>
+    <p class="cert-id">Certificate ID: ${id}</p>
+  </div>
+`;
+      }
     })
     .catch(error => {
       console.error(error);
