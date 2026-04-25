@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CyberRise Certificate Verifier</title>
+  <title>CyberRise Certificate Verification</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <!-- Firebase v8 (IMPORTANT) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 
 <body>
 
-  <h1>CyberRise Certificate Verification</h1>
+<div class="container">
+  <h1>🎓 CyberRise Certificate Verification</h1>
 
-  <input type="text" id="certID" placeholder="Enter Certificate ID">
-  <button onclick="verifyCert()">Verify</button>
+  <input type="text" id="certID" placeholder="Enter Student ID (e.g. CRI-001)">
+  <button onclick="verifyCert()">Verify Certificate</button>
 
   <div id="result"></div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
