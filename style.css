@@ -1,96 +1,66 @@
-/* GLOBAL RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
-/* BACKGROUND */
 body {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at top, #0f172a, #020617);
-  color: white;
-  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
 }
 
-/* GLOW EFFECT BACKDROP */
-body::before {
-  content: "";
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: rgba(34, 197, 94, 0.15);
-  filter: blur(120px);
-  top: -100px;
-  left: -100px;
-}
-
-/* CARD */
 .container {
-  position: relative;
-  width: 380px;
+  width: 400px;
   padding: 30px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
+  background: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
   text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
-/* TITLE */
 h1 {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 20px;
-  color: #22c55e;
+  color: #0f172a;
 }
 
-/* INPUT */
 input {
   width: 100%;
   padding: 12px;
   border-radius: 10px;
-  border: none;
-  outline: none;
+  border: 1px solid #ccc;
   margin-bottom: 15px;
-  background: rgba(255,255,255,0.1);
-  color: white;
+  outline: none;
 }
 
-/* BUTTON */
 button {
   width: 100%;
   padding: 12px;
   border: none;
   border-radius: 10px;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  color: black;
+  background: #16a34a;
+  color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
 }
 
 button:hover {
-  transform: scale(1.03);
+  background: #15803d;
 }
 
-/* RESULT BOX */
 #result {
   margin-top: 20px;
   font-size: 14px;
-  line-height: 1.6;
 }
 
-/* SUCCESS */
 .success {
-  color: #22c55e;
+  color: #16a34a;
 }
 
-/* ERROR */
 .error {
-  color: #ef4444;
+  color: #dc2626;
 }
