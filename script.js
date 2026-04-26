@@ -10,8 +10,10 @@ const firebaseConfig = {
   measurementId: "G-2PDGRCRCHX"
 };
 
-// 🚀 Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// 🚀 Initialize Firebase (prevent double init)
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 const db = firebase.firestore();
 
 // 🔍 Verify Certificate
@@ -20,7 +22,8 @@ function verifyCert() {
 
   if (!id) {
     document.getElementById("result").innerHTML =
-      <div class="error">⚠️ Please enter a Student ID</div>';
+      '<div class="error">⚠️ Please enter a Student ID</div>';
+    document.getElementById("qrcode").innerHTML = "";
     return;
   }
 
@@ -29,10 +32,9 @@ function verifyCert() {
       if (doc.exists) {
         const data = doc.data();
 
-        // Show certificate
+        // ✅ Show certificate
         document.getElementById("result").innerHTML = `
-          
-<div class="cert-card">
+          <div class="cert-card">
             <h2>🎓 Certificate Verified</h2>
 
             <p style="font-size:12px; color:#64748b;">
@@ -43,15 +45,24 @@ function verifyCert() {
             <p class="cert-course">${data.course}</p>
             <p class="cert-date">Issued: ${data.date}</p>
             <p class="cert-id">Certificate ID: ${id}</p>
-        
-</div>
+          </div>
+        `;
+
+        // 🔗 Create verification URL
+        const url =
+          window.location.origin +
+          window.location.pathname +
+          "?id=" +
+          encodeURIComponent(id);
+
+        // 🧼 Clear + add label
+        document.getElementById("qrcode").innerHTML = `
+          <p style="margin-top:10px; font-size:12px; text-align:center;">
+            Scan to verify certificate
+          </p>
         `;
 
         // 🔐 Generate QR
-        const url = window.location.origin + window.location.pathname + "?id=" + id;
-
-        document.getElementById("qrcode").innerHTML = ""; // clear old QR
-
         new QRCode(document.getElementById("qrcode"), {
           text: url,
           width: 120,
@@ -61,15 +72,19 @@ function verifyCert() {
       } else {
         document.getElementById("result").innerHTML =
           '<div class="error">❌ Certificate Not Found</div>';
+        document.getElementById("qrcode").innerHTML = "";
       }
     })
     .catch(error => {
-      console.error(error);
+      console.error("Firestore Error:", error);
+
       document.getElementById("result").innerHTML =
         '<div class="error">⚠️ Error connecting to database</div>';
+      document.getElementById("qrcode").innerHTML = "";
     });
 }
-// 🔍 Auto verify from URL
+
+// 🔄 Auto verify from QR link
 window.onload = function () {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
