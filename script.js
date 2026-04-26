@@ -14,16 +14,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 🔍 Verify Certificate Function
+// 🔍 Verify Certificate
 function verifyCert() {
   const id = document.getElementById("certID").value.trim();
 
+  // ❗ Empty input check
   if (!id) {
     document.getElementById("result").innerHTML =
       '<div class="error">⚠️ Please enter a Student ID</div>';
     return;
   }
 
+  // 🔎 Fetch from Firestore
   db.collection("certificates").doc(id).get()
     .then(doc => {
       if (doc.exists) {
@@ -50,6 +52,7 @@ function verifyCert() {
     })
     .catch(error => {
       console.error(error);
+
       document.getElementById("result").innerHTML =
         '<div class="error">⚠️ Error connecting to database</div>';
     });
