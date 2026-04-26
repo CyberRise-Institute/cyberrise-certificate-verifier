@@ -1,4 +1,3 @@
-alert("JS Loaded");
 // 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
@@ -19,20 +18,17 @@ const db = firebase.firestore();
 function verifyCert() {
   const id = document.getElementById("certID").value.trim();
 
-  // ❗ If input is empty
   if (!id) {
     document.getElementById("result").innerHTML =
       '<div class="error">⚠️ Please enter a Student ID</div>';
     return;
   }
 
-  // 🔎 Fetch from Firestore
   db.collection("certificates").doc(id).get()
     .then(doc => {
       if (doc.exists) {
         const data = doc.data();
 
-        // ✅ Show certificate
         document.getElementById("result").innerHTML = `
           <div class="cert-card">
             <h2>🎓 Certificate Verified</h2>
@@ -48,14 +44,12 @@ function verifyCert() {
           </div>
         `;
       } else {
-        // ❌ Not found
         document.getElementById("result").innerHTML =
           '<div class="error">❌ Certificate Not Found</div>';
       }
     })
     .catch(error => {
-      console.error("Error:", error);
-
+      console.error(error);
       document.getElementById("result").innerHTML =
         '<div class="error">⚠️ Error connecting to database</div>';
     });
