@@ -31,14 +31,7 @@ function verifyCert() {
 
         // Show certificate
         document.getElementById("result").innerHTML = `
-          <p style="margin-top:10px; font-size:12px;">
-Scan to verify certificate
-</p>
-new QRCode(document.getElementById("qrcode"), {
-  text: url,
-  width: 120,
-  height: 120
-});
+          
 <div class="cert-card">
             <h2>🎓 Certificate Verified</h2>
 
