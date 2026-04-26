@@ -67,3 +67,13 @@ function verifyCert() {
         '<div class="error">⚠️ Error connecting to database</div>';
     });
 }
+// 🔍 Auto verify from URL
+window.onload = function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (id) {
+    document.getElementById("certID").value = id;
+    verifyCert();
+  }
+};
