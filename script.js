@@ -25,7 +25,7 @@ function verifyCert() {
     <p class="cert-name">${data.name}</p>
     <p class="cert-course">${data.course}</p>
     <p class="cert-date">Issued: ${data.date}</p>
-    <p class="cert-id">ID: ${id}</p>
+    <p class="cert-id">Certificate ID: ${id}</p>
   </div>
 `;
       } else {
