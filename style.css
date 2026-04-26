@@ -73,31 +73,48 @@ button:hover {
   text-align: center;
 }
 
+.cert-card {
+  margin-top: 25px;
+  padding: 25px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 2px solid #16a34a;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Title */
 .cert-card h2 {
   color: #16a34a;
   margin-bottom: 10px;
+  font-size: 20px;
 }
 
+/* Name (BIG + bold like certificate) */
 .cert-name {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: #0f172a;
+  margin-top: 10px;
 }
 
+/* Course */
 .cert-course {
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: 8px;
   color: #334155;
 }
 
+/* Date */
 .cert-date {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 13px;
-  color: #64748b;
+  color: #475569;
 }
 
+/* ID */
 .cert-id {
-  margin-top: 5px;
+  margin-top: 6px;
   font-size: 12px;
   color: #94a3b8;
 }
