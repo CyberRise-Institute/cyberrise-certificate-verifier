@@ -10,9 +10,13 @@ function normalize(id) {
 // ===============================
 // VERIFY CERTIFICATE
 // ===============================
+function normalize(v) {
+  return (v || "").toString().trim().toLowerCase();
+}
+
 function verifyCert() {
   const input = document.getElementById("certID");
-  const id = input ? input.value : "";
+  const id = normalize(input.value);
 
   if (!id) {
     document.getElementById("result").innerHTML =
@@ -20,9 +24,7 @@ function verifyCert() {
     return;
   }
 
-  const searchId = normalize(id);
-
-  db.ref("certificates").get()
+  db.ref("certificates").once("value")
     .then(snapshot => {
 
       if (!snapshot.exists()) {
@@ -35,11 +37,11 @@ function verifyCert() {
       let foundKey = null;
 
       snapshot.forEach(child => {
-        const key = child.key;
+        const key = normalize(child.key);
 
-        if (normalize(key) === searchId) {
+        if (key === id) {
           found = child.val();
-          foundKey = key;
+          foundKey = child.key;
         }
       });
 
@@ -48,6 +50,50 @@ function verifyCert() {
           "<p class='error'>❌ Certificate Not Found</p>";
         return;
       }
+
+      document.getElementById("result").innerHTML = `
+        <div class="cert" id="certificate">
+
+          <div class="watermark">CyberRise</div>
+
+          <h2>Certificate Verified</h2>
+
+          <div class="name">${found.name}</div>
+
+          <p>${found.course}</p>
+
+          <p><b>ID:</b> ${foundKey}</p>
+
+          <div class="seal">✔</div>
+
+          <div class="stamp show">VERIFIED ✔</div>
+
+          <div id="qrcode"></div>
+
+          <button onclick="downloadPDF()" class="download-btn">
+            Download PDF
+          </button>
+        </div>
+      `;
+
+      setTimeout(() => {
+        if (typeof QRCode !== "undefined") {
+          new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href + "?id=" + foundKey,
+            width: 110,
+            height: 110
+          });
+        }
+      }, 300);
+
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById("result").innerHTML =
+        "<p class='error'>⚠️ Firebase connection failed</p>";
+    });
+}
+      });
 
       // ===============================
       // SUCCESS UI (CERTIFICATE)
