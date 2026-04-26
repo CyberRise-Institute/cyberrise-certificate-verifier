@@ -2,30 +2,34 @@
 <html>
 <head>
   <title>Issue Certificate</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 </head>
 
 <body>
 
+<h2>Issue Certificate</h2>
+
+<input id="id" placeholder="Certificate ID">
 <input id="name" placeholder="Name">
 <input id="course" placeholder="Course">
-<input id="date" placeholder="Date">
 
-<button onclick="issue()">Issue Certificate</button>
+<button onclick="issue()">Create Certificate</button>
 
-<script type="module">
-import { db, doc, setDoc } from "./firebase.js";
+<script src="firebase.js"></script>
 
-window.issue = async function () {
-  const id = Math.random().toString(36).substring(2,10);
+<script>
+function issue() {
+  const id = document.getElementById("id").value;
 
-  await setDoc(doc(db, "certificates", id), {
+  db.ref("certificates/" + id).set({
     name: document.getElementById("name").value,
     course: document.getElementById("course").value,
-    date: document.getElementById("date").value
+    date: new Date().toDateString()
   });
 
-  alert("Issued! ID: " + id);
-};
+  alert("Certificate Issued");
+}
 </script>
 
 </body>
