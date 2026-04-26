@@ -1,35 +1,18 @@
-console.log("Script loaded successfully");
+console.log("🚀 CyberRise Verification System Loaded");
 
-// 🔥 Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
-  authDomain: "cyberrise-certificates.firebaseapp.com",
-  databaseURL: "https://cyberrise-certificates-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "cyberrise-certificates",
-  storageBucket: "cyberrise-certificates.firebasestorage.app",
-  messagingSenderId: "358741421806",
-  appId: "1:358741421806:web:5c9105e3ebc85895780dff",
-  measurementId: "G-2PDGRCRCHX"
-};
-
-// 🚀 Initialize Firebase (Realtime Database)
-firebase.initializeApp(firebaseConfig);
+// Firebase already initialized in firebase.js
 const db = firebase.database();
 
-// 🔍 Verify Certificate
+/* ===============================
+   VERIFY CERTIFICATE
+================================ */
 function verifyCert() {
-  const input = document.getElementById("certId");
-
-  if (!input) {
-    console.error("certId input not found in HTML");
-    return;
-  }
-
-  const id = input.value.trim();
+  const input = document.getElementById("certID");
+  const id = input ? input.value.trim() : "";
 
   if (!id) {
     document.getElementById("result").innerHTML =
-      '<div class="error">⚠️ Please enter a Certificate ID</div>';
+      "<p class='error'>⚠️ Enter Certificate ID</p>";
     return;
   }
 
@@ -38,72 +21,83 @@ function verifyCert() {
 
       if (!snapshot.exists()) {
         document.getElementById("result").innerHTML =
-          '<div class="error">❌ Certificate Not Found</div>';
+          "<p class='error'>❌ Certificate Not Found</p>";
         return;
       }
 
       const data = snapshot.val();
 
       document.getElementById("result").innerHTML = `
-        <div id="certificate" class="a4-cert">
+        <div class="cert" id="certificate">
 
-          <div class="cert-top">
-            <p class="subtitle">Official Certificate</p>
-          </div>
+          <div class="watermark">CyberRise</div>
 
-          <div class="cert-main">
-            <h2>Certificate of Completion</h2>
+          <h2>Certificate of Completion</h2>
 
-            <p>This certifies that</p>
-            <h3>${data.name}</h3>
+          <p>This certifies that</p>
+          <div class="name">${data.name}</div>
 
-            <p>has successfully completed</p>
-            <h3>${data.course}</h3>
+          <p>has successfully completed</p>
+          <h3>${data.course}</h3>
 
-            <div class="meta">
-              <div><strong>${data.date}</strong></div>
-              <div><strong>${id}</strong></div>
-            </div>
-          </div>
+          <p><b>ID:</b> ${id}</p>
 
-          <div class="cert-footer">
-            <div id="qrcode"></div>
-          </div>
+          <div class="seal">✔</div>
 
+          <div class="stamp" id="stamp">VERIFIED ✔</div>
+
+          <div id="qrcode"></div>
+
+          <button onclick="downloadPDF()" class="download-btn">
+            Download PDF
+          </button>
         </div>
-
-        <button onclick="downloadPDF()" class="btn">Download PDF</button>
       `;
 
-      // QR CODE (safe check)
+      // QR CODE
       try {
-        if (typeof QRCode !== "undefined") {
-          new QRCode(document.getElementById("qrcode"), {
-            text: window.location.href + "?id=" + id,
-            width: 100,
-            height: 100
-          });
-        } else {
-          console.warn("QRCode library not loaded");
-        }
+        new QRCode(document.getElementById("qrcode"), {
+          text: window.location.href + "?id=" + id,
+          width: 110,
+          height: 110
+        });
       } catch (e) {
-        console.error("QR error:", e);
+        console.warn("QR not loaded");
       }
 
+      // Animate stamp
+      setTimeout(() => {
+        const stamp = document.getElementById("stamp");
+        if (stamp) stamp.classList.add("show");
+      }, 400);
+
+      // Track verification (IP log)
+      fetch("https://api.ipify.org?format=json")
+        .then(res => res.json())
+        .then(ip => {
+          db.ref("verifications").push({
+            certId: id,
+            ip: ip.ip,
+            time: new Date().toISOString()
+          });
+        });
+
     })
-    .catch(error => {
-      console.error("Firebase error:", error);
+    .catch(err => {
+      console.error(err);
       document.getElementById("result").innerHTML =
-        '<div class="error">⚠️ Error connecting to database</div>';
+        "<p class='error'>⚠️ System Error</p>";
     });
 }
 
-// 📄 Download PDF (safe check)
+/* ===============================
+   DOWNLOAD PDF
+================================ */
 function downloadPDF() {
-  const element = document.getElementById("certificate");
+  const cert = document.getElementById("certificate");
 
-  if (!element) {
-    alert("No certificate found to download");
+  if (!cert) {
+    alert("No certificate to download");
     return;
   }
 
@@ -112,5 +106,5 @@ function downloadPDF() {
     return;
   }
 
-  html2pdf().from(element).save("CyberRise_Certificate.pdf");
+  html2pdf().from(cert).save("CyberRise-Certificate.pdf");
 }
