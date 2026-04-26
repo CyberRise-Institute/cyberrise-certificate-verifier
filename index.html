@@ -1,40 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>CyberRise Certificate Verification</title>
-
   <link rel="stylesheet" href="style.css">
 
-  <!-- 1. Firebase Core (MUST LOAD FIRST) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-
-  <!-- 2. Firebase Database (REQUIRED FOR YOUR PROJECT) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
-
-  <!-- 3. QR CODE LIBRARY -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-  <!-- 4. PDF EXPORT LIBRARY -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- Firebase v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 
 <body>
 
-  <div class="container">
-    <h1>🎓 Verify Certificate</h1>
+<div class="container">
 
-    <input id="certID" placeholder="Enter Certificate ID">
-    <button onclick="verifyCert()">Verify</button>
+  <h1>🎓 CyberRise Certificate Verification</h1>
 
-    <div id="result"></div>
-  </div>
+  <input type="text" id="certID" placeholder="Enter Student ID (e.g. CRI-001)">
+  <button onclick="verifyCert()">Verify Certificate</button>
 
-  <!-- 5. FIREBASE CONFIG (YOUR FILE) -->
-  <script src="firebase.js"></script>
+  <div id="result"></div>
 
-  <!-- 6. YOUR MAIN LOGIC -->
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
