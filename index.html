@@ -1,60 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Certificate Verifier</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      text-align: center;
-      padding: 40px;
-    }
-
-    input {
-      padding: 10px;
-      width: 250px;
-      margin: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 20px;
-    }
-
-    .cert-card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      display: inline-block;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-  </style>
-</head>
-
-<body>
-
-  <h2>🎓 Certificate Verification</h2>
-
-  <input type="text" id="studentId" placeholder="Enter Student ID">
-  <button onclick="verifyCertificate()">Verify</button>
-
-  <div id="result"></div>
+  <title>Verify Certificate - CyberRise</title>
+  <link rel="stylesheet" href="style.css">
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 
-  <!-- Your script -->
-  <script src="script.js"></script>
+  <!-- QR + PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎓 Certificate Verification</h1>
+
+  <input id="certID" placeholder="Enter Certificate ID">
+  <button onclick="verifyCert()">Verify</button>
+
+  <div id="result"></div>
+</div>
+
+<script src="firebase.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
