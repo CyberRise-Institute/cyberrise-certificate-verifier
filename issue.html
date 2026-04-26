@@ -1,1 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Issue Certificate</title>
+</head>
 
+<body>
+
+<input id="name" placeholder="Name">
+<input id="course" placeholder="Course">
+<input id="date" placeholder="Date">
+
+<button onclick="issue()">Issue Certificate</button>
+
+<script type="module">
+import { db, doc, setDoc } from "./firebase.js";
+
+window.issue = async function () {
+  const id = Math.random().toString(36).substring(2,10);
+
+  await setDoc(doc(db, "certificates", id), {
+    name: document.getElementById("name").value,
+    course: document.getElementById("course").value,
+    date: document.getElementById("date").value
+  });
+
+  alert("Issued! ID: " + id);
+};
+</script>
+
+</body>
+</html>
