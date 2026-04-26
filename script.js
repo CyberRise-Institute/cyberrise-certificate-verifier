@@ -18,19 +18,18 @@ const db = firebase.firestore();
 function verifyCert() {
   const id = document.getElementById("certID").value.trim();
 
-  // ❗ Empty input check
   if (!id) {
     document.getElementById("result").innerHTML =
       '<div class="error">⚠️ Please enter a Student ID</div>';
     return;
   }
 
-  // 🔎 Fetch from Firestore
   db.collection("certificates").doc(id).get()
     .then(doc => {
       if (doc.exists) {
         const data = doc.data();
 
+        // Show certificate
         document.getElementById("result").innerHTML = `
           <div class="cert-card">
             <h2>🎓 Certificate Verified</h2>
@@ -45,6 +44,18 @@ function verifyCert() {
             <p class="cert-id">Certificate ID: ${id}</p>
           </div>
         `;
+
+        // 🔐 Generate QR
+        const url = window.location.origin + window.location.pathname + "?id=" + id;
+
+        document.getElementById("qrcode").innerHTML = ""; // clear old QR
+
+        new QRCode(document.getElementById("qrcode"), {
+          text: url,
+          width: 120,
+          height: 120
+        });
+
       } else {
         document.getElementById("result").innerHTML =
           '<div class="error">❌ Certificate Not Found</div>';
@@ -52,7 +63,6 @@ function verifyCert() {
     })
     .catch(error => {
       console.error(error);
-
       document.getElementById("result").innerHTML =
         '<div class="error">⚠️ Error connecting to database</div>';
     });
