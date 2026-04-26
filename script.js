@@ -31,7 +31,15 @@ function verifyCert() {
 
         // Show certificate
         document.getElementById("result").innerHTML = `
-          <div class="cert-card">
+          <p style="margin-top:10px; font-size:12px;">
+Scan to verify certificate
+</p>
+new QRCode(document.getElementById("qrcode"), {
+  text: url,
+  width: 120,
+  height: 120
+});
+<div class="cert-card">
             <h2>🎓 Certificate Verified</h2>
 
             <p style="font-size:12px; color:#64748b;">
@@ -42,9 +50,7 @@ function verifyCert() {
             <p class="cert-course">${data.course}</p>
             <p class="cert-date">Issued: ${data.date}</p>
             <p class="cert-id">Certificate ID: ${id}</p>
-        <p style="margin-top:10px; font-size:12px;">
-Scan to verify certificate
-</p>
+        
 </div>
         `;
 
