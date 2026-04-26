@@ -1,21 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CyberRise Certificate Verification</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Certificate Verifier</title>
 
-  <!-- Firebase v8 (IMPORTANT) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      text-align: center;
+      padding: 40px;
+    }
+
+    input {
+      padding: 10px;
+      width: 250px;
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    .cert-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 
 <body>
 
-<input id="certId" placeholder="Enter Certificate ID">
-<button onclick="verifyCert()">Verify</button>
+  <h2>🎓 Certificate Verification</h2>
 
-<div id="result"></div>
+  <input type="text" id="studentId" placeholder="Enter Student ID">
+  <button onclick="verifyCertificate()">Verify</button>
 
-<script type="module" src="script.js"></script>
+  <div id="result"></div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+
+  <!-- Your script -->
+  <script src="script.js"></script>
+
 </body>
 </html>
