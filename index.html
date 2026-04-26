@@ -11,16 +11,11 @@
 
 <body>
 
-<div class="container">
-  <h1>🎓 CyberRise Certificate Verification</h1>
+<input id="certId" placeholder="Enter Certificate ID">
+<button onclick="verifyCert()">Verify</button>
 
-  <input type="text" id="certID" placeholder="Enter Student ID (e.g. CRI-001)">
-  <button onclick="verifyCert()">Verify Certificate</button>
+<div id="result"></div>
 
-  <div id="result"></div>
-</div>
-
-<script src="script.js"></script>
-
+<script type="module" src="script.js"></script>
 </body>
 </html>
