@@ -20,7 +20,7 @@ function verifyCert() {
 
   if (!id) {
     document.getElementById("result").innerHTML =
-      '<div class="error">⚠️ Please enter a Student ID</div>';
+      <div class="error">⚠️ Please enter a Student ID</div>';
     return;
   }
 
