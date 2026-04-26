@@ -1,4 +1,4 @@
-// 🔥 Firebase Config (YOURS)
+// 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
   authDomain: "cyberrise-certificates.firebaseapp.com",
@@ -14,30 +14,47 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 🔍 Verify Certificate
+// 🔍 Verify Certificate Function
 function verifyCert() {
   const id = document.getElementById("certID").value.trim();
 
+  // ❗ If input is empty
   if (!id) {
-    document.getElementById("result").innerHTML = `
-  <div class="cert-card">
-    <h2>🎓 Certificate Verified</h2>
-    <p style="font-size:12px; color:#64748b;">
-Verified by CyberRise Institute
-  </p>
-    <p class="cert-name">${data.name}</p>
-    <p class="cert-course">${data.course}</p>
-    <p class="cert-date">Issued: ${data.date}</p>
-    <p class="cert-id">Certificate ID: ${id}</p>
-  </div>
-`;
+    document.getElementById("result").innerHTML =
+      '<div class="error">⚠️ Please enter a Student ID</div>';
+    return;
+  }
+
+  // 🔎 Fetch from Firestore
+  db.collection("certificates").doc(id).get()
+    .then(doc => {
+      if (doc.exists) {
+        const data = doc.data();
+
+        // ✅ Show certificate
+        document.getElementById("result").innerHTML = `
+          <div class="cert-card">
+            <h2>🎓 Certificate Verified</h2>
+
+            <p style="font-size:12px; color:#64748b;">
+              Verified by CyberRise Institute
+            </p>
+
+            <p class="cert-name">${data.name}</p>
+            <p class="cert-course">${data.course}</p>
+            <p class="cert-date">Issued: ${data.date}</p>
+            <p class="cert-id">Certificate ID: ${id}</p>
+          </div>
+        `;
       } else {
+        // ❌ Not found
         document.getElementById("result").innerHTML =
           '<div class="error">❌ Certificate Not Found</div>';
       }
     })
     .catch(error => {
-      console.error(error);
+      console.error("Error:", error);
+
       document.getElementById("result").innerHTML =
         '<div class="error">⚠️ Error connecting to database</div>';
     });
