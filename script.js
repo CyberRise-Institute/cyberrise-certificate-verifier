@@ -42,7 +42,10 @@ function verifyCert() {
             <p class="cert-course">${data.course}</p>
             <p class="cert-date">Issued: ${data.date}</p>
             <p class="cert-id">Certificate ID: ${id}</p>
-          </div>
+        <p style="margin-top:10px; font-size:12px;">
+Scan to verify certificate
+</p>
+</div>
         `;
 
         // 🔐 Generate QR
