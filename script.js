@@ -19,24 +19,15 @@ function verifyCert() {
   const id = document.getElementById("certID").value.trim();
 
   if (!id) {
-    document.getElementById("result").innerHTML =
-      '<div class="error">⚠️ Please enter a Student ID</div>';
-    return;
-  }
-
-  db.collection("certificates").doc(id).get()
-    .then(doc => {
-      if (doc.exists) {
-        const data = doc.data();
-
-        document.getElementById("result").innerHTML = `
-          <div class="success">
-            <h3>✅ Certificate Verified</h3>
-            <p><b>Name:</b> ${data.name}</p>
-            <p><b>Course:</b> ${data.course}</p>
-            <p><b>Date:</b> ${data.date}</p>
-          </div>
-        `;
+    document.getElementById("result").innerHTML = `
+  <div class="cert-card">
+    <h2>🎓 Certificate Verified</h2>
+    <p class="cert-name">${data.name}</p>
+    <p class="cert-course">${data.course}</p>
+    <p class="cert-date">Issued: ${data.date}</p>
+    <p class="cert-id">ID: ${id}</p>
+  </div>
+`;
       } else {
         document.getElementById("result").innerHTML =
           '<div class="error">❌ Certificate Not Found</div>';
