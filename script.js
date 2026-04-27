@@ -10,7 +10,7 @@ const firebaseConfig = {
   measurementId: "G-2PDGRCRCHX"
 };
 
-// 🚀 Initialize Firebase (prevent double init)
+// 🚀 Initialize Firebase safely
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -31,95 +31,63 @@ function verifyCert() {
       if (doc.exists) {
         const data = doc.data();
 
-        // Show certificate
+        // 🎓 Luxury Certificate Display
         document.getElementById("result").innerHTML = `
-  <div id="certificate" class="cert-card">
+          <div id="certificate" class="cert-card" style="
+            background: #fff;
+            border: 5px solid #16a34a;
+            padding: 30px;
+            text-align: center;
+            font-family: Georgia, serif;
+          ">
 
-    <h2>🎓 CyberRise Institute</h2>
+            <img src="logo.png" style="width:80px; margin-bottom:10px;" />
 
-    <p style="font-size:12px; color:#64748b;">
-      Official Certificate of Completion
-    </p>
+            <h2 style="margin:0; color:#16a34a;">CyberRise Institute</h2>
+            <p style="font-size:12px; letter-spacing:1px;">Certificate of Completion</p>
 
-    <h3 class="cert-name">${data.name}</h3>
+            <hr style="margin:20px 0;">
 
-    <p class="cert-course">
-      has successfully completed<br>
-      <b>${data.course}</b>
-    </p>
+            <p>This is to certify that</p>
 
-    <p class="cert-date">Issued: ${data.date}</p>
+            <h1 style="margin:10px 0; color:#0f172a;">
+              ${data.name}
+            </h1>
 
-    <p class="cert-id">Certificate ID: ${id}</p>
+            <p>has successfully completed</p>
 
-    <!-- ✍ Signature -->
-    <div style="margin-top:20px;">
-      <p style="font-size:12px;">________________________</p>
-      <p style="font-size:12px;">Director, CyberRise Institute</p>
-    </div>
+            <h3 style="color:#16a34a;">
+              ${data.course}
+            </h3>
 
-  </div>
+            <p style="margin-top:10px;">Issued: ${data.date}</p>
 
-  <!-- 🔽 DOWNLOAD BUTTON -->
-  <button onclick="downloadPDF()" style="margin-top:15px;">
-    📄 Download Certificate
-  </button>
-`;
-            <h2>🎓 Certificate Verified</h2>
+            <!-- 🔐 QR inside certificate -->
+            <div id="certQR" style="margin-top:20px;"></div>
 
-            <p style="font-size:12px; color:#64748b;">
-              Verified by CyberRise Institute
+            <!-- ✍ Signature -->
+            <div style="margin-top:30px;">
+              <p>________________________</p>
+              <p style="font-size:12px;">Director, CyberRise Institute</p>
+            </div>
+
+            <p style="margin-top:10px; font-size:10px;">
+              Certificate ID: ${id}
             </p>
 
-            <p class="cert-name">${data.name}</p>
-            <p class="cert-course">${data.course}</p>
-            <p class="cert-date">Issued: ${data.date}</p>
-            <p class="cert-id">Certificate ID: ${id}</p>
           </div>
+
+          <button onclick="downloadPDF()" style="margin-top:15px;">
+            📄 Download Certificate
+          </button>
         `;
 
-        // 🔐 Generate QR
-        const url = window.location.origin + window.location.pathname + "?id=" + id;
+        // 🔗 Generate verification URL
+        const url =
+          window.location.origin +
+          window.location.pathname +
+          "?id=" +
+          encodeURIComponent(id);
 
-        document.getElementById("qrcode").innerHTML = ""; // clear old QR
-
-        new QRCode(document.getElementById("qrcode"), {
-          text: url,
-          width: 120,
-          height: 120
-        });
-
-      } else {
-        document.getElementById("result").innerHTML =
-          '<div class="error">❌ Certificate Not Found</div>';
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      document.getElementById("result").innerHTML =
-        '<div class="error">⚠️ Error connecting to database</div>';
-    });
-}
-// 🔍 Auto verify from URL
-window.onload = function () {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
-
-  if (id) {
-    document.getElementById("certID").value = id;
-    verifyCert();
-  }
-};
-function downloadPDF() {
-  const element = document.getElementById("certificate");
-
-  const opt = {
-    margin: 0.5,
-    filename: 'CyberRise-Certificate.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(element).save();
-}
+        // 🔐 Generate QR inside certificate
+        document
