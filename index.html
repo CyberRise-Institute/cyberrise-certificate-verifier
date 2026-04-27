@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>CyberRise Certificate Verification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 🎨 CSS -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase v8 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- 🔥 Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- 🔐 QR Code -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- 📄 PDF Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
+    <h1>🎓 CyberRise Certificate Verification</h1>
+    <p>Enter your Certificate ID to verify authenticity</p>
 
-  <h1>🎓 CyberRise Certificate Verification</h1>
+    <!-- 🔍 Input -->
+    <input 
+      type="text" 
+      id="certID" 
+      placeholder="Enter Certificate ID (e.g. CRI-001)"
+    >
 
-  <input type="text" id="certID" placeholder="Enter Student ID (e.g. CRI-001)">
-  <button onclick="verifyCert()">Verify Certificate</button>
+    <!-- 🔘 Button -->
+    <button onclick="verifyCert()">Verify Certificate</button>
 
-  <div id="result"></div>
-<div id="qrcode" style="margin-top:20px;"></div>
-</div>
-<script src="script.js"></script>
-</body>
-</html>
+    <!-- 📄 Result -->
+    <div
