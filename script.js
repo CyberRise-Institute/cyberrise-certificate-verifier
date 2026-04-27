@@ -33,7 +33,38 @@ function verifyCert() {
 
         // Show certificate
         document.getElementById("result").innerHTML = `
-          <div class="cert-card">
+  <div id="certificate" class="cert-card">
+
+    <h2>🎓 CyberRise Institute</h2>
+
+    <p style="font-size:12px; color:#64748b;">
+      Official Certificate of Completion
+    </p>
+
+    <h3 class="cert-name">${data.name}</h3>
+
+    <p class="cert-course">
+      has successfully completed<br>
+      <b>${data.course}</b>
+    </p>
+
+    <p class="cert-date">Issued: ${data.date}</p>
+
+    <p class="cert-id">Certificate ID: ${id}</p>
+
+    <!-- ✍ Signature -->
+    <div style="margin-top:20px;">
+      <p style="font-size:12px;">________________________</p>
+      <p style="font-size:12px;">Director, CyberRise Institute</p>
+    </div>
+
+  </div>
+
+  <!-- 🔽 DOWNLOAD BUTTON -->
+  <button onclick="downloadPDF()" style="margin-top:15px;">
+    📄 Download Certificate
+  </button>
+`;
             <h2>🎓 Certificate Verified</h2>
 
             <p style="font-size:12px; color:#64748b;">
