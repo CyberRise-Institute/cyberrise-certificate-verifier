@@ -110,3 +110,16 @@ window.onload = function () {
     verifyCert();
   }
 };
+function downloadPDF() {
+  const element = document.getElementById("certificate");
+
+  const opt = {
+    margin: 0.5,
+    filename: 'CyberRise-Certificate.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
