@@ -60,7 +60,7 @@ function verifyCert() {
           text-align: center;
           font-family: Georgia, serif;
         ">
-
+<div class="watermark"></div>
           <img src="logo.png" style="width:80px; margin-bottom:10px;" />
 
           <h2 style="color:#16a34a;">CyberRise Institute</h2>
