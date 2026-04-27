@@ -130,3 +130,120 @@ button:hover {
     width: 100%;
   }
 }
+/* 🌟 ELITE CERTIFICATE DESIGN */
+
+.elite {
+  background: #fff;
+  border: 12px solid gold;
+  padding: 30px;
+  text-align: center;
+  font-family: "Georgia", serif;
+  position: relative;
+}
+
+/* HEADER */
+.cert-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 28px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* LOGO */
+.logo {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+/* GOLD FRAME AREA */
+.gold-frame {
+  border: 3px solid gold;
+  padding: 25px;
+  margin: 20px 0;
+}
+
+/* TEXT */
+.small-text {
+  font-size: 13px;
+  color: #475569;
+}
+
+.name {
+  font-size: 26px;
+  color: #0f172a;
+  margin: 10px 0;
+}
+
+.course {
+  color: #16a34a;
+  font-size: 18px;
+}
+
+.date {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #64748b;
+}
+
+/* QR */
+.qr-box {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+/* FOOTER */
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  align-items: center;
+}
+
+/* SIGNATURE */
+.signature {
+  width: 120px;
+}
+
+/* ID */
+.cert-id {
+  font-size: 10px;
+  margin-top: 10px;
+  color: #94a3b8;
+}
+
+/* BUTTON */
+.download-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: gold;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+/* 🌊 WATERMARK USING LOGO */
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+
+  background: url("logo.png") no-repeat center;
+  background-size: contain;
+
+  opacity: 0.06; /* very faint */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ensure content is above watermark */
+#certificate * {
+  position: relative;
+  z-index: 2;
+}
