@@ -1,120 +1,132 @@
-* {
+/* 🌐 GENERAL PAGE */
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
-body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f172a, #1e293b);
-}
-
-.container {
-  width: 400px;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 16px;
+  color: #ffffff;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
-h1 {
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #0f172a;
+/* 📦 MAIN CONTAINER */
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #ffffff;
+  color: #000;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
+/* 🏷 TITLE */
+.container h1 {
+  margin-bottom: 5px;
+}
+
+.container p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 🔍 INPUT */
 input {
-  width: 100%;
+  width: 85%;
   padding: 12px;
-  border-radius: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  margin-bottom: 15px;
   outline: none;
+  font-size: 14px;
 }
 
+/* 🔘 BUTTON */
 button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
+  margin-top: 15px;
+  padding: 12px 20px;
   background: #16a34a;
-  color: white;
-  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
 button:hover {
   background: #15803d;
 }
 
-#result {
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.success {
-  color: #16a34a;
-}
-
+/* ❌ ERROR */
 .error {
+  margin-top: 15px;
   color: #dc2626;
-}
-.cert-card {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 12px;
-  background: #f8fafc;
-  border: 2px solid #16a34a;
-  text-align: center;
+  font-weight: bold;
 }
 
+/* 🎓 CERTIFICATE CARD */
 .cert-card {
   margin-top: 25px;
-  padding: 25px;
-  border-radius: 14px;
   background: #ffffff;
-  border: 2px solid #16a34a;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  color: #000;
+  border-radius: 10px;
+  padding: 20px;
 }
 
-/* Title */
-.cert-card h2 {
-  color: #16a34a;
-  margin-bottom: 10px;
-  font-size: 20px;
+/* 🧾 CERTIFICATE (PDF AREA) */
+#certificate {
+  max-width: 800px;
+  margin: auto;
+  background: #ffffff;
+  color: #000;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
-/* Name (BIG + bold like certificate) */
+/* 🧑 NAME */
 .cert-name {
   font-size: 20px;
   font-weight: bold;
   color: #0f172a;
-  margin-top: 10px;
 }
 
-/* Course */
+/* 📘 COURSE */
 .cert-course {
   font-size: 14px;
-  margin-top: 8px;
   color: #334155;
 }
 
-/* Date */
+/* 📅 DATE */
 .cert-date {
-  margin-top: 12px;
   font-size: 13px;
   color: #475569;
 }
 
-/* ID */
+/* 🆔 ID */
 .cert-id {
-  margin-top: 6px;
   font-size: 12px;
-  color: #94a3b8;
+  color: #64748b;
+}
+
+/* 🔐 QR AREA */
+#certQR {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
 }
