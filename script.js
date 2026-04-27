@@ -31,7 +31,7 @@ function verifyCert() {
       if (doc.exists) {
         const data = doc.data();
 
-        // 🎓 Luxury Certificate Display
+        // 🎓 Certificate Display
         document.getElementById("result").innerHTML = `
           <div id="certificate" class="cert-card" style="
             background: #fff;
@@ -65,29 +65,4 @@ function verifyCert() {
             <!-- 🔐 QR inside certificate -->
             <div id="certQR" style="margin-top:20px;"></div>
 
-            <!-- ✍ Signature -->
-            <div style="margin-top:30px;">
-              <p>________________________</p>
-              <p style="font-size:12px;">Director, CyberRise Institute</p>
-            </div>
-
-            <p style="margin-top:10px; font-size:10px;">
-              Certificate ID: ${id}
-            </p>
-
-          </div>
-
-          <button onclick="downloadPDF()" style="margin-top:15px;">
-            📄 Download Certificate
-          </button>
-        `;
-
-        // 🔗 Generate verification URL
-        const url =
-          window.location.origin +
-          window.location.pathname +
-          "?id=" +
-          encodeURIComponent(id);
-
-        // 🔐 Generate QR inside certificate
-        document
+            <!-- ✍ Signature
