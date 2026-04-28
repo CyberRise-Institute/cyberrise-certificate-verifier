@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+
+  <style>
+    body {
+      background: #0f172a;
+      color: #fff;
+      font-family: Arial;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+
+<body>
+
+  <h1>📊 Admin Dashboard</h1>
+
+  <button onclick="logout()">Logout</button>
+
+  <div class="card">
+    <h3>Add Certificate</h3>
+
+    <input id="id" placeholder="Certificate ID">
+    <input id="name" placeholder="Student Name">
+    <input id="course" value="CyberRise 30-day Cybersecurity Career Blueprint">
+    <input id="date" placeholder="Date">
+
+    <button onclick="addCert()">Add Certificate</button>
+
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
+      authDomain: "cyberrise-certificates.firebaseapp.com",
+      projectId: "cyberrise-certificates"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 🔒 Protect page
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "admin.html";
+      }
+    });
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "admin.html";
+      });
+    }
+
+    function addCert() {
+      const id = document.getElementById("id").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const course = document.getElementById("course").value.trim();
+      const date = document.getElementById("date").value.trim();
+
+      if (!id || !name || !course || !date) {
+        document.getElementById("msg").innerText = "Fill all fields";
+        return;
+      }
+
+      db.collection("certificates").doc(id).set({
+        name,
+        course,
+        date
+      })
+      .then(() => {
+        document.getElementById("msg").innerText = "✅ Certificate Added";
+      });
+    }
+  </script>
+
+</body>
+</html>
