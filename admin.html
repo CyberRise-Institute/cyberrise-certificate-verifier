@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>CyberRise Admin Dashboard</title>
+  <title>Admin Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
-      font-family: Arial;
       background: #0f172a;
       color: #fff;
+      font-family: Arial;
       text-align: center;
-      padding: 20px;
+      padding: 40px;
     }
 
     .card {
@@ -19,14 +18,14 @@
       color: #000;
       padding: 20px;
       border-radius: 10px;
-      max-width: 400px;
+      max-width: 350px;
       margin: auto;
     }
 
     input {
       width: 90%;
       padding: 10px;
-      margin: 8px;
+      margin: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
@@ -39,37 +38,25 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
-    .success {
-      color: green;
-      margin-top: 10px;
-    }
   </style>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </head>
 
 <body>
 
-  <h1>🔐 CyberRise Admin Dashboard</h1>
+  <h1>🔐 CyberRise Admin Login</h1>
 
   <div class="card">
-    <h3>Add Certificate</h3>
-
-    <input id="id" placeholder="Certificate ID (e.g. CRI-002)">
-    <input id="name" placeholder="Student Name">
-    <input id="course" value="CyberRise 30-day Cybersecurity Career Blueprint">
-    <input id="date" placeholder="Date (e.g. July 2026)">
-
-    <button onclick="addCert()">Add Certificate</button>
-
-    <div id="msg"></div>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p id="msg"></p>
   </div>
 
   <script>
-    // 🔥 Firebase Config (same as your main)
     const firebaseConfig = {
       apiKey: "AIzaSyCnAGp4IAiDdAe2cmvhmPYg3PfBc-7Acp4",
       authDomain: "cyberrise-certificates.firebaseapp.com",
@@ -77,34 +64,18 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
 
-    function addCert() {
-      const id = document.getElementById("id").value.trim();
-      const name = document.getElementById("name").value.trim();
-      const course = document.getElementById("course").value.trim();
-      const date = document.getElementById("date").value.trim();
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-      if (!id || !name || !course || !date) {
-        document.getElementById("msg").innerHTML =
-          "<p style='color:red;'>Fill all fields</p>";
-        return;
-      }
-
-      db.collection("certificates").doc(id).set({
-        name,
-        course,
-        date
-      })
-      .then(() => {
-        document.getElementById("msg").innerHTML =
-          "<p class='success'>✅ Certificate Added</p>";
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById("msg").innerHTML =
-          "<p style='color:red;'>Error adding certificate</p>";
-      });
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch(() => {
+          document.getElementById("msg").innerText = "❌ Login failed";
+        });
     }
   </script>
 
