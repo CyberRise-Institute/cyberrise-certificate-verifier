@@ -236,7 +236,7 @@ button:hover {
   background: url("logo.png") no-repeat center;
   background-size: contain;
 
-  opacity: 0.06; /* very faint */
+  opacity: 0.04; /* very faint */
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
