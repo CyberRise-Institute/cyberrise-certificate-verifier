@@ -480,3 +480,152 @@ body {
   right: 0;
   bottom: 100px;
 }
+/* 🌍 PAGE */
+body {
+  background: #0f172a;
+}
+
+/* 📦 WRAPPER */
+.exact-cert {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px;
+  position: relative;
+}
+
+/* 🟡 CARD */
+.cert-card {
+  background: #fff;
+  border: 4px solid #d4af37;
+  border-radius: 10px;
+  padding: 50px 40px;
+  text-align: center;
+  font-family: "Georgia", serif;
+  position: relative;
+  z-index: 2;
+}
+
+/* 🥇 SEAL */
+.seal {
+  width: 90px;
+  margin-bottom: 10px;
+}
+
+/* 🔠 TITLES */
+.cert-title {
+  letter-spacing: 6px;
+  color: #c9a646;
+  margin: 0;
+}
+
+.cert-sub {
+  color: #c9a646;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* 🧍 NAME */
+.cert-name {
+  font-size: 30px;
+  color: #c9a646;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+/* ➖ DIVIDER */
+.divider {
+  height: 2px;
+  width: 60%;
+  background: #c9a646;
+  margin: 10px auto;
+}
+
+/* 📄 TEXT */
+.cert-intro,
+.cert-desc {
+  font-size: 14px;
+  color: #444;
+}
+
+/* 📘 COURSE */
+.cert-course {
+  font-size: 18px;
+  color: #0f172a;
+}
+
+/* 🧾 FOOT */
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.foot-block {
+  text-align: center;
+}
+
+.foot-date {
+  font-weight: bold;
+}
+
+.sign {
+  width: 130px;
+}
+
+/* 🔢 ID */
+.cert-id {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* 🌊 WAVES */
+.wave {
+  position: absolute;
+  width: 350px;
+  height: 220px;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.wave-tl {
+  top: -100px;
+  left: -100px;
+}
+
+.wave-br {
+  bottom: -100px;
+  right: -100px;
+}
+
+/* 🔵 DOTS */
+.dots {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  background-image: radial-gradient(#60a5fa 2px, transparent 2px);
+  background-size: 10px 10px;
+  opacity: 0.5;
+}
+
+.dots-left {
+  left: 0;
+  top: 120px;
+}
+
+.dots-right {
+  right: 0;
+  bottom: 120px;
+}
+
+/* 📄 BUTTON */
+.download-btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: gold;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
