@@ -336,3 +336,147 @@ button:hover {
   font-size: 12px;
   color: #999;
 }
+body {
+  background: #0f172a;
+  font-family: Arial;
+}
+
+/* WRAPPER */
+.cert-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  border: 4px solid #d4af37;
+}
+
+/* CONTENT */
+.cert-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  font-family: "Georgia", serif;
+}
+
+/* BADGE */
+.badge {
+  width: 90px;
+  margin-bottom: 10px;
+}
+
+/* TITLES */
+.title {
+  letter-spacing: 6px;
+  color: #bfa046;
+}
+
+.subtitle {
+  color: #bfa046;
+  font-size: 14px;
+}
+
+/* NAME */
+.name {
+  font-size: 30px;
+  color: #bfa046;
+  margin: 15px 0;
+}
+
+/* LINE */
+.line {
+  height: 2px;
+  background: #bfa046;
+  width: 60%;
+  margin: 10px auto;
+}
+
+/* TEXT */
+.presented,
+.desc {
+  color: #444;
+  font-size: 14px;
+}
+
+/* COURSE */
+.course {
+  font-size: 18px;
+  color: #0f172a;
+}
+
+/* FOOT */
+.cert-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+/* SIGNATURE */
+.signature {
+  width: 120px;
+}
+
+/* LABEL */
+.label {
+  font-size: 12px;
+  color: #777;
+}
+
+/* ID */
+.cert-id {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: gold;
+  border: none;
+  cursor: pointer;
+}
+
+/* 🌊 WAVES */
+.wave {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.top-left {
+  top: -80px;
+  left: -80px;
+}
+
+.bottom-right {
+  bottom: -80px;
+  right: -80px;
+}
+
+/* 🔵 DOT PATTERN */
+.dots {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(#60a5fa 2px, transparent 2px);
+  background-size: 10px 10px;
+  opacity: 0.4;
+}
+
+.dots.left {
+  left: 0;
+  top: 100px;
+}
+
+.dots.right {
+  right: 0;
+  bottom: 100px;
+}
