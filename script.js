@@ -12,16 +12,11 @@ const firebaseConfig = {
 };
 
 // ============================
-// 🚀 INIT FIREBASE SAFELY
+// 🚀 INIT FIREBASE
 // ============================
-try {
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-} catch (e) {
-  console.error("Firebase init error:", e);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
-
 const db = firebase.firestore();
 
 // ============================
@@ -30,15 +25,13 @@ const db = firebase.firestore();
 function verifyCert() {
   const id = document.getElementById("certID").value.trim();
   const result = document.getElementById("result");
-  const qrBox = document.getElementById("qrcode");
 
   if (!id) {
     result.innerHTML = "<p style='color:red;'>⚠️ Enter Certificate ID</p>";
     return;
   }
 
-  result.innerHTML = "<p>Checking...</p>";
-  qrBox.innerHTML = "";
+  result.innerHTML = "<p>Checking certificate...</p>";
 
   db.collection("certificates").doc(id).get()
     .then(doc => {
@@ -50,64 +43,76 @@ function verifyCert() {
       const data = doc.data();
 
       // ============================
-      // 🎓 CERTIFICATE UI
+      // 🎓 CERTIFICATE DESIGN
       // ============================
       result.innerHTML = `
-        <div id="certificate" class="cert-card" style="
-          background: #fff;
-          border: 5px solid #16a34a;
-          padding: 30px;
-          text-align: center;
-          font-family: Georgia, serif;
-        ">
-<div class="watermark"></div>
-          <img src="logo.png" style="width:80px; margin-bottom:10px;" />
+        <div id="certificate" class="exact-cert">
 
-          <h2 style="color:#16a34a;">CyberRise Institute</h2>
-          <p style="font-size:12px;">Certificate of Completion</p>
+          <div class="wave wave-tl"></div>
+          <div class="wave wave-br"></div>
 
-          <hr>
+          <div class="dots dots-left"></div>
+          <div class="dots dots-right"></div>
 
-          <p>This is to certify that</p>
+          <div class="cert-card">
 
-          <h1 style="color:#0f172a;">
-            ${data.name || "N/A"}
-          </h1>
+            <img src="seal.png" class="seal" />
 
-          <p>has successfully completed</p>
+            <h1 class="cert-title">CERTIFICATE</h1>
+            <p class="cert-sub">OF COMPLETION</p>
 
-          <h3 style="color:#16a34a;">
-            ${data.course || "N/A"}
-          </h3>
+            <p class="cert-intro">This certificate is proudly presented to:</p>
 
-          <p>Issued: ${data.date || "N/A"}</p>
+            <h2 class="cert-name">${data.name || "N/A"}</h2>
 
-          <div id="certQR" style="margin-top:20px;"></div>
+            <div class="divider"></div>
 
-          <div style="margin-top:30px;">
-            <p>_____________________</p>
-            <p style="font-size:12px;">Director, CyberRise Institute</p>
+            <p class="cert-desc">
+              In recognition of successful completion of
+            </p>
+
+            <h3 class="cert-course">${data.course || "N/A"}</h3>
+
+            <p class="cert-desc">Issued by CyberRise Institute</p>
+
+            <!-- 🔐 QR -->
+            <div id="certQR" style="margin-top:20px;"></div>
+
+            <div class="cert-footer">
+
+              <div class="foot-block">
+                <p class="foot-date">${data.date || "N/A"}</p>
+                <span>Date</span>
+              </div>
+
+              <div class="foot-block">
+                <img src="signature.png" class="sign" />
+                <span>Director</span>
+              </div>
+
+            </div>
+
+            <p class="cert-id">Certificate ID: ${id}</p>
+
           </div>
-
-          <p style="font-size:10px;">ID: ${id}</p>
         </div>
 
-        <button onclick="downloadPDF()" style="margin-top:15px;">
+        <button onclick="downloadPDF()" class="download-btn">
           📄 Download Certificate
         </button>
       `;
 
       // ============================
-      // 🔐 QR GENERATION
+      // 🔗 QR GENERATION
       // ============================
       const url = window.location.origin + window.location.pathname + "?id=" + id;
 
       setTimeout(() => {
-        const qrElement = document.getElementById("certQR");
-        if (qrElement && window.QRCode) {
-          qrElement.innerHTML = "";
+        const qrBox = document.getElementById("certQR");
 
-          new QRCode(qrElement, {
+        if (qrBox && window.QRCode) {
+          qrBox.innerHTML = "";
+          new QRCode(qrBox, {
             text: url,
             width: 100,
             height: 100
@@ -118,7 +123,7 @@ function verifyCert() {
     })
     .catch(err => {
       console.error(err);
-      result.innerHTML = "<p style='color:red;'>⚠️ Database Error</p>";
+      result.innerHTML = "<p style='color:red;'>⚠️ Database error</p>";
     });
 }
 
@@ -135,10 +140,17 @@ function downloadPDF() {
 
   const opt = {
     margin: 0,
-    filename: 'CyberRise-Certificate.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 3 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+    filename: "CyberRise-Certificate.pdf",
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: {
+      scale: 3,
+      useCORS: true
+    },
+    jsPDF: {
+      unit: "in",
+      format: "a4",
+      orientation: "landscape"
+    }
   };
 
   html2pdf().set(opt).from(element).save();
@@ -148,18 +160,14 @@ function downloadPDF() {
 // 🔄 AUTO VERIFY FROM QR LINK
 // ============================
 window.onload = function () {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
 
-    if (id) {
-      const input = document.getElementById("certID");
-      if (input) {
-        input.value = id;
-        verifyCert();
-      }
+  if (id) {
+    const input = document.getElementById("certID");
+    if (input) {
+      input.value = id;
+      verifyCert();
     }
-  } catch (e) {
-    console.error("Auto-load error:", e);
   }
 };
