@@ -247,3 +247,92 @@ button:hover {
   position: relative;
   z-index: 2;
 }
+/* 🌊 MODERN CERTIFICATE DESIGN */
+
+.modern-cert {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 40px;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  border-radius: 20px;
+}
+
+.cert-inner {
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  position: relative;
+  font-family: "Georgia", serif;
+}
+
+/* GOLD BADGE */
+.badge {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+/* TITLES */
+.title {
+  letter-spacing: 5px;
+  color: #bfa046;
+}
+
+.subtitle {
+  color: #bfa046;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* NAME */
+.name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #bfa046;
+  margin: 15px 0;
+}
+
+/* TEXT */
+.presented,
+.desc {
+  font-size: 14px;
+  color: #444;
+}
+
+/* COURSE */
+.course {
+  font-size: 18px;
+  color: #0f172a;
+  margin: 10px 0;
+}
+
+/* BOTTOM */
+.cert-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+/* SIGNATURE */
+.signature {
+  width: 120px;
+}
+
+/* DATE */
+.date {
+  font-weight: bold;
+}
+
+/* LABEL */
+.label {
+  font-size: 12px;
+  color: #777;
+}
+
+/* ID */
+.cert-id {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #999;
+}
